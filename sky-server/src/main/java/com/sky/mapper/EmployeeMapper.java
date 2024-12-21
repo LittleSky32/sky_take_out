@@ -27,4 +27,13 @@ public interface EmployeeMapper {
     Return page by page split querying
      */
     Page<Employee> queryPage(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * update employee based on id
+     * @param employee
+     */
+    void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Long id);
 }

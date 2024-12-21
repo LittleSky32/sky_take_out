@@ -11,10 +11,12 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.JstlUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,5 +89,30 @@ public class EmployeeController {
         PageResult page = employeeService.page(employeePageQueryDTO);
         return Result.success(page);
     }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("Start or stop employee account")
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        log.info("Employee id {} changes to {} status", id, status);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("Query employee information")
+    public Result<Employee> getById(@PathVariable Long id){
+        log.info("Query employee id {} info", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("Edit employee information")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("Edit employee information {}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return  Result.success();
+    }
+
 
 }
